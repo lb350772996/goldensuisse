@@ -149,7 +149,7 @@
     },
     methods: {
       echartsInit () {
-      // 找到容器
+      // 找到容器 
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 开始渲染
       myChart.setOption({
