@@ -32,7 +32,8 @@ export default {
   plugins: [
     "~/plugins/api.js",
     "~/plugins/bootstrap.js",
-    '~/plugins/fontawesome.js'
+    '~/plugins/fontawesome.js',
+    '~/plugins/echarts.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -21,8 +21,9 @@
                 </div>
             </div>
             <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;"/>
+            
         </div>
-        
+       <div> <div id="myChart"  style="height: 496px;width: 496px;" ></div></div>
         <div class="d-flex justify-content-end" style="margin-top: 15px; width: 620px;">
           <ToggleSwitch :value="valueOrPercent" label="Value/Percent" @change="changeValueOrPercent"/>
         </div>
@@ -144,8 +145,63 @@
     mounted() {
       // this.$store.commit('setLoadingContent', true);
       // this.fetchData();
+      this.echartsInit();
     },
     methods: {
+      echartsInit () {
+      // 找到容器
+      let myChart = this.$echarts.init(document.getElementById('myChart'))
+      // 开始渲染
+      myChart.setOption({
+        tooltip: {
+        trigger: 'item'
+      },
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: ['30%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            normal: {
+              color: function (colors) {
+                var colorList = [
+                  '#debf8f',
+                  '#c4c4c4',
+         
+                ];
+                return colorList[colors.dataIndex];
+              },  
+              borderColor: '#fff',
+              borderWidth: 2,
+            },
+
+          },
+          label: {
+            show: true,
+            position: 'inner',
+            color : '#f0f0f0',
+            fontSize : 14 
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 40,
+              fontWeight: 'bold'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: [
+            { value: 89.6, name: '89.6%' },
+            { value: 10.4, name: '10.4%' },
+          ]
+        }
+      ]
+        })
+      },
+
       async fetchData() {
         console.log('fetchData');
         var currency_result = await this.$api.$get('exchange_price/type_based');
