@@ -23,7 +23,7 @@
             <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;"/>
             
         </div>
-       <div> <div id="myChart"  style="height: 496px;width: 496px;" ></div></div>
+       <div class="myChart"> <div id="myChart"  style="height: 496px;width: 496px;" ></div></div>
         <div class="d-flex justify-content-end" style="margin-top: 15px; width: 620px;">
           <ToggleSwitch :value="valueOrPercent" label="Value/Percent" @change="changeValueOrPercent"/>
         </div>
@@ -166,7 +166,7 @@
             normal: {
               color: function (colors) {
                 var colorList = [
-                  '#debf8f',
+                  '#e0b655',
                   '#c4c4c4',
          
                 ];
@@ -378,7 +378,18 @@
 <style scoped>
 .overview-contnet {
     padding: 30px 120px 30px 120px;
+    position: relative;
 }
+.myChart{
+  position:absolute;
+  z-index: 31;
+  top: 50px;
+  right: 0px;
+  margin-right: 50px;
+  /* background-color: aqua;  */
+ 
+}
+
 .text-username {
     font-family: 'Arial';
     font-style: normal;
