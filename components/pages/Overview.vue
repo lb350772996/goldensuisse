@@ -1,7 +1,7 @@
 <template>
     <div class="overview-contnet h-100" style="background-color: #EAEAEA">
         <div class="text-username d-flex flex-column">
-            <span>Welcome</span>
+            <span>Welcome  </span>
             <span>{{ this.$store.state.firstname }} {{ this.$store.state.lastname }}</span>
             <div style="height: 1px; width: 240px; background-color: black; margin-top: 15px;"/>
         </div>
@@ -13,11 +13,11 @@
             <div class="d-flex flex-row" style="margin-bottom: 15px">
                 <div class="d-flex flex-column">
                     <span class="text-overview-title">Total</span>
-                    <span class="text-overview-value">CHF 27, 147</span>
+                    <span class="text-overview-value">CHF {{ data.total_balance.toFixed(2) }}</span>
                 </div>
                 <div class="d-flex flex-column" style="margin-left: 100px">
                     <span class="text-overview-title">Performance</span>
-                    <span class="text-overview-value">CHF 27, 147</span>
+                    <span class="text-overview-value">CHF {{ data.total_profit }}</span>
                 </div>
             </div>
             <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;"/>
@@ -35,14 +35,14 @@
             <div class="d-flex flex-row" style="margin-top: 35px">
               <Card 
                 type="Gold"
-                holdings="5,000 Oz"
-                profit_loss="CHF 25,348"
-                background="#EBBD4C"/>
+                :holdings="this.vaults.gold"
+                :profit_loss="this.chartData[1][1]"
+                background="#EBBD4C"   :wei="this.wei" />
               <Card 
                 type="Silver"
-                holdings="150 Oz"
-                profit_loss="CHF 25,348"
-                background="#D1CFCD"
+                :holdings="this.vaults.silver"
+                :profit_loss="this.chartData[3][1]"
+                background="#D1CFCD"   :wei="this.wei"
                 style="margin-left: 27px"/>
             </div>
           </div>
@@ -53,20 +53,20 @@
             <div class="d-flex flex-row" style="margin-top: 35px">
               <Card 
                 type="CHF"
-                holdings="5,000 Oz"
-                profit_loss="CHF 25,348"
-                background="#FFFCFB"/>
+                holdings="Sfr 5000"
+                profit_loss="25,348"
+                background="#FFFCFB"  />
               <Card 
                 type="EUR"
-                holdings="150 Oz"
-                profit_loss="CHF 25,348"
+                holdings="€ 150"
+                profit_loss="25,348"
                 background="#FFFCFB"
                 style="margin-left: 27px"/>
               <Card 
                 type="Card"
-                holdings="150 Oz"
-                profit_loss="CHF 25,348"
-                background="#FFFCFB"
+                holdings="€ 150"
+                profit_loss="25,348"
+                background="#FFFCFB" 
                 style="margin-left: 27px"/>
             </div>
           </div>
@@ -108,9 +108,17 @@
     },
     data () {
       return {
+        wei : 'Oz',
         valueOrPercent: true,
         ozOrKg: false,
-        data: null,
+        vaults:{
+          gold:0,
+          silver:0,
+        },
+        data: {
+          total_balance:0,
+          total_profit:0
+        },
         chartData: [
           ['Task', 'Hours per Day'],
           ['Work', 11],
@@ -144,7 +152,7 @@
     },
     mounted() {
       // this.$store.commit('setLoadingContent', true);
-      // this.fetchData();
+      this.fetchData();
       this.echartsInit();
     },
     methods: {
@@ -204,16 +212,28 @@
 
       async fetchData() {
         console.log('fetchData');
-        var currency_result = await this.$api.$get('exchange_price/type_based');
-        console.log(currency_result);
+     
+
+        const config = {
+            headers:{
+              AuthenticationToken: process.env.TEST_AUTH_TOKEN,
+            }
+          };
+
+        // var currency_result = await this.$api.$get('exchange_price/type_based');
+
+        var currency_result  = await this.$axios.$get('exchange_price/type_based',config)
+       console.log(currency_result)
   
         var body = new FormData();
         body.append('username', 'yang@goldensuisse.com');
-        var balance_result = await this.$api.$post('getBalance', body);
+        // var balance_result = await this.$api.$post('getBalance', body);
+        var balance_result = await this.$axios.$post('getBalance', body,config);
         console.log(balance_result);
-  
-        var profitloss_array = await this.$api.$post('profit_loss/get_profit_loss', body);
-        console.log(profitloss_array);
+
+        // var profitloss_array = await this.$api.$post('profit_loss/get_profit_loss', body);
+        var profitloss_array = await this.$axios.$post('profit_loss/get_profit_loss' , body ,config)
+        console.log(profitloss_array ,'ssssss');
   
         if (balance_result.ResponseCode != '0') {
           return;
@@ -230,7 +250,7 @@
           var profitloss_item = profitloss_array.ResponseResult[i];
           profitloss[profitloss_item.Bullion] = profitloss_item;
           total_purchase += profitloss_item.accumulatedPurchases;
-          total_profit += profitloss_item.profitLoss;
+          total_profit += profitloss_item.profitLoss;         
         }
   
         var profit_percent = 0;
@@ -240,7 +260,7 @@
   
         var default_currency = this.$store.state.app_currency;
         var total_balance = 0;
-  
+        console.log(default_currency)
         // Gold Eagle
         var final_result = {
           gold: {
@@ -251,6 +271,9 @@
             profit_percent: profitloss.GEA['%']
           }
         };
+        this.vaults.gold = balance_result.ResponseResult.Gold.AvailableBalance
+        this.vaults.silver = balance_result.ResponseResult.Silver.AvailableBalance
+
         total_balance += final_result.gold.conversion_rate;
   
         // Gold Bar
@@ -338,10 +361,10 @@
         this.data = {
           result: final_result,
           total_balance: total_balance,
-          total_profit: total_profit,
+          total_profit: Number(total_profit),
           profit_percent: profit_percent
         }
-        console.log(this.data);
+        
         this.chartData = [
           ['Account', 'Available Balance'],
           ['Gold Coins', this.numberFormatter(this.data.result.gold.conversion_rate, 2) * 1],
@@ -357,6 +380,15 @@
         this.valueOrPercent = value;
       },
       changeOzOrKg(value) {
+        if(value){
+          this.vaults.gold = this.vaults.gold*0.0283495
+          this.vaults.silver = this.vaults.silver*0.0283495
+          this.wei = 'Kg';
+        }else{
+          this.vaults.gold =this.vaults.gold/0.0283495
+          this.vaults.silver =this.vaults.silver/0.0283495
+          this.wei = 'Oz';
+        }
         this.ozOrKg = value;
       },
       numberFormatter(value, decimal) {

@@ -2,8 +2,8 @@
     <div class="card-content d-flex flex-column" :style="'background: ' + background">
         <span class="text-type">{{ type }}</span>
         <div class="line"/>
-        <span class="text-holdings">{{ holdings }}</span>
-        <span class="text-profit-loss">{{ profit_loss }}</span>
+        <span class="text-holdings">{{ holdings }} {{ wei }}</span>
+        <span class="text-profit-loss">CHF {{ profit_loss }}</span>
     </div>
 </template>
 
@@ -13,8 +13,19 @@ export default {
         'type',
         'holdings',
         'profit_loss',
-        'background'
-    ]
+        'background',
+        'ozOrKg',
+        'wei'
+    ],
+    data() {
+        return {
+        }
+    },
+    mounted() {
+    },
+    methods: {
+        
+    }
 }
 </script>
 
