@@ -91,4 +91,5 @@ export default {
     width: 40px;
     height: 40px;
 }
+
 </style>
