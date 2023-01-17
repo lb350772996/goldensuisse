@@ -10,7 +10,7 @@
                 <line data-v-0fb7651e="" x1="60" x2="0" y1="13" y2="13" class="menu__rect"></line>
             </svg>
         </section>
-        <div v-if="!h_title" class=" collapse navbar-collapse title" id="collapse" style="">
+        <div class=" collapse navbar-collapse" :class="!h_title ? '' : 'title'" id="collapse" style="">
             <ul class="navbar-nav nav-list" :class="h_isWidth ? '' : 'flex-column'">
                 <li class="nav-link">
                     <a>Holdings</a>
@@ -42,7 +42,7 @@
             <img class="img-title" src="/svg/icons8-logout-100 1.svg" />
         </a>
     </div>
-</template> 
+</template>
 
 <script>
 export default {
@@ -181,7 +181,7 @@ export default {
         /* top: -270px !important; */
         /* left: 0px; */
         top: 115px;
-        right: -414px;
+        opacity: 0;
         position: absolute;
         z-index: -1;
         width: 100%;
@@ -190,7 +190,7 @@ export default {
 
     .title {
         transition: all 0.7s;
-        right: 0;
+        opacity: 1;
     }
 
     .header-content {
