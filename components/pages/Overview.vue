@@ -7,7 +7,7 @@
         </div>
         <div class="text-holding-overview d-flex flex-column">
             <span>Holding Overview</span>
-            <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;"/>
+            <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'" />
         </div>
         <div class="d-flex flex-column" style="margin-top: 30px">
             <div class="d-flex hold-overview" :class="isWidth ? 'flex-row' : 'flex-column'" style="margin-bottom: 15px">
@@ -20,19 +20,19 @@
                     <span class="text-overview-value">CHF {{ data.total_profit }}</span>
                 </div>
             </div>
-            <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;"/>
+            <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'"/>
             
         </div>
-       <div class="myChart"> <div id="myChart"  style="height: 496px;width: 496px;" ></div></div>
-        <div class="d-flex justify-content-end" style="margin-top: 15px; width: 620px;">
+       
+        <div class="d-flex justify-content-end" style="margin-top: 15px; width: 620px;" :style="isWidth ? '' : 'width: 95%'">
           <ToggleSwitch :value="valueOrPercent" label="Value/Percent" @change="changeValueOrPercent"/>
         </div>
 
-        <div class="d-flex flex-row justify-content-between w-100" style="margin-top: 60px">
-          <div class="text-detail d-flex flex-column">
+        <div class="d-flex flex-row justify-content-between w-100 " :class="isWidth ? '' : 'flex-column '" style="margin-top: 60px">
+          <div class="text-detail d-flex flex-column"   >
             <span>Vaults</span>
-            <div style="height: 1px; width: 430px; background-color: black; margin-top: 15px;"/>
-            <div class="d-flex flex-row" style="margin-top: 35px">
+            <div style="height: 1px; width: 430px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'"/>
+            <div class="d-flex flex-row" style="margin-top: 35px" :class="isWidth ? 'flex-row ' : 'flex-column m-auto'">
               <Card 
                 type="Gold"
                 :holdings="this.vaults.gold"
@@ -43,14 +43,17 @@
                 :holdings="this.vaults.silver"
                 :profit_loss="this.chartData[3][1] "
                 background="#D1CFCD"   :wei="this.wei"
-                style="margin-left: 27px"/>
+                style="margin-left: 27px" />
+            </div>
+            <div class=" d-flex justify-content-end" style="margin-top: 5px;width: 95%;" v-if="!isWidth">
+              <ToggleSwitch :value="ozOrKg" label="Oz/Kg" @change="changeOzOrKg"/>
             </div>
           </div>
-
+          
           <div class="text-detail d-flex flex-column">
             <span>Account</span>
-            <div style="height: 1px; width: 650px; background-color: black; margin-top: 15px;"/>
-            <div class="d-flex flex-row" style="margin-top: 35px">
+            <div style="height: 1px; width: 650px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'"/>
+            <div class="d-flex flex-row" :class="isWidth ? '' : 'flex-column m-auto'" style="margin-top: 35px" >
               <Card 
                 type="CHF"
                 holdings="5000"
@@ -70,8 +73,8 @@
                 style="margin-left: 27px"/>
             </div>
           </div>
-
-          <div class="card-category align-self-end d-flex flex-column">
+          <div class="myChart"> <div id="myChart"   ></div></div>
+          <div class="card-category d-flex flex-column"  :class="isWidth ? 'align-self-end ' : ' m-auto'">
             <div class="d-flex align-items-center" style="margin-top: 26px; margin-left: 30px">
               <img src="/svg/icon-gold.svg"/>
               <span class="text-type">Gold</span>
@@ -87,7 +90,7 @@
           </div>
         </div>
 
-        <div class="d-flex" style="margin-top: 45px;">
+        <div class="d-flex" style="margin-top: 45px;" v-if="isWidth">
           <ToggleSwitch :value="ozOrKg" label="Oz/Kg" @change="changeOzOrKg"/>
         </div>
     </div>
@@ -535,12 +538,35 @@
   color: #363636;
   text-decoration: underline;
 }
+#myChart{
+  height: 496px;width: 496px;
+}
 @media only screen and (max-width:750px) {
     .overview-contnet{
-      padding: 30px 30px 30px 30px;
+      padding: 60px 30px 30px 30px;
+      margin: 0px auto; 
+      /* margin-top: 100px; */
     }
     .myChart{
-      display: none;
+      /* display: none; */
+      margin-right: 0px;
+      position:static;
+     
+      /* left: 0px; */
+    }
+    .text-holding-overview{
+      margin-top: 50px;
+    }
+    
+    .text-detail{
+      width: 100%;
+    }
+    #myChart{
+      height: 296px;width: 296px;
+      margin: 0px auto;
+    }
+    .card-category {
+      margin-left: 27px;
     }
 }
 </style>  

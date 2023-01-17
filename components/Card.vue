@@ -85,4 +85,14 @@ export default {
     align-self: flex-end;
     margin-right: 12px;
 }
+@media only screen and (max-width:750px) {
+    .card-content{
+        margin-left: 0px !important;
+        margin-bottom: 27px;
+        margin-top: 35px;
+    }
+    /* .card{
+        margin-left: 0 !important;
+    } */
+}
 </style>
