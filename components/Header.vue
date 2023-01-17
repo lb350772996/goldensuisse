@@ -42,7 +42,7 @@
             <img class="img-title" src="/svg/icons8-logout-100 1.svg" />
         </a>
     </div>
-</template>
+</template> 
 
 <script>
 export default {
