@@ -7,71 +7,74 @@
         </div>
         <div class="text-holding-overview d-flex flex-column">
             <span>Holding Overview</span>
-            <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;"/>
+            <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'" />
         </div>
         <div class="d-flex flex-column" style="margin-top: 30px">
-            <div class="d-flex flex-row" style="margin-bottom: 15px">
+            <div class="d-flex hold-overview" :class="isWidth ? 'flex-row' : 'flex-column'" style="margin-bottom: 15px">
                 <div class="d-flex flex-column">
                     <span class="text-overview-title">Total</span>
                     <span class="text-overview-value">CHF {{ data.total_balance.toFixed(2) }}</span>
                 </div>
-                <div class="d-flex flex-column" style="margin-left: 100px">
+                <div class="d-flex flex-column"  :style="isWidth ? 'flex-margin-left: 100px' : 'margin-top: 50px'">
                     <span class="text-overview-title">Performance</span>
                     <span class="text-overview-value">CHF {{ data.total_profit }}</span>
                 </div>
             </div>
-            <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;"/>
+            <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'"/>
             
         </div>
-       <div class="myChart"> <div id="myChart"  style="height: 496px;width: 496px;" ></div></div>
-        <div class="d-flex justify-content-end" style="margin-top: 15px; width: 620px;">
+       
+        <div class="d-flex justify-content-end" style="margin-top: 15px; width: 620px;" :style="isWidth ? '' : 'width: 95%'">
           <ToggleSwitch :value="valueOrPercent" label="Value/Percent" @change="changeValueOrPercent"/>
         </div>
 
-        <div class="d-flex flex-row justify-content-between w-100" style="margin-top: 60px">
-          <div class="text-detail d-flex flex-column">
+        <div class="d-flex flex-row justify-content-between w-100 " :class="isWidth ? '' : 'flex-column '" style="margin-top: 60px">
+          <div class="text-detail d-flex flex-column"   >
             <span>Vaults</span>
-            <div style="height: 1px; width: 430px; background-color: black; margin-top: 15px;"/>
-            <div class="d-flex flex-row" style="margin-top: 35px">
+            <div style="height: 1px; width: 430px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'"/>
+            <div class="d-flex flex-row" style="margin-top: 35px" :class="isWidth ? 'flex-row ' : 'flex-column m-auto'">
               <Card 
                 type="Gold"
                 :holdings="this.vaults.gold"
-                :profit_loss="this.chartData[1][1]"
+                :profit_loss="this.chartData[1][1]  "
                 background="#EBBD4C"   :wei="this.wei" />
               <Card 
                 type="Silver"
                 :holdings="this.vaults.silver"
-                :profit_loss="this.chartData[3][1]"
+                :profit_loss="this.chartData[3][1] "
                 background="#D1CFCD"   :wei="this.wei"
-                style="margin-left: 27px"/>
+                style="margin-left: 27px" />
+            </div>
+            <div class=" d-flex justify-content-end" style="margin-top: 5px;width: 95%;" v-if="!isWidth">
+              <ToggleSwitch :value="ozOrKg" label="Oz/Kg" @change="changeOzOrKg"/>
             </div>
           </div>
-
+          
           <div class="text-detail d-flex flex-column">
             <span>Account</span>
-            <div style="height: 1px; width: 650px; background-color: black; margin-top: 15px;"/>
-            <div class="d-flex flex-row" style="margin-top: 35px">
+            <div style="height: 1px; width: 650px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'"/>
+            <div class="d-flex flex-row" :class="isWidth ? '' : 'flex-column m-auto'" style="margin-top: 35px" >
               <Card 
                 type="CHF"
-                holdings="Sfr 5000"
+                holdings="5000"
                 profit_loss="25,348"
-                background="#FFFCFB"  />
+                background="#FFFCFB" :pei="'Sfr' "  />
               <Card 
                 type="EUR"
-                holdings="€ 150"
+                holdings="150"
                 profit_loss="25,348"
-                background="#FFFCFB"
+                background="#FFFCFB" :pei=" '€' "
                 style="margin-left: 27px"/>
               <Card 
                 type="Card"
-                holdings="€ 150"
+                holdings="150"
                 profit_loss="25,348"
-                background="#FFFCFB" 
+                background="#FFFCFB" :pei="'€' "
                 style="margin-left: 27px"/>
             </div>
           </div>
-
-          <div class="card-category align-self-end d-flex flex-column">
+          <div class="myChart"> <div id="myChart"   ></div></div>
+          <div class="card-category d-flex flex-column"  :class="isWidth ? 'align-self-end ' : ' m-auto'">
             <div class="d-flex align-items-center" style="margin-top: 26px; margin-left: 30px">
               <img src="/svg/icon-gold.svg"/>
               <span class="text-type">Gold</span>
@@ -87,7 +90,7 @@
           </div>
         </div>
 
-        <div class="d-flex" style="margin-top: 45px;">
+        <div class="d-flex" style="margin-top: 45px;" v-if="isWidth">
           <ToggleSwitch :value="ozOrKg" label="Oz/Kg" @change="changeOzOrKg"/>
         </div>
     </div>
@@ -108,6 +111,8 @@
     },
     data () {
       return {
+        screenWidth:1040, // 屏幕宽度
+		    isWidth: false ,
         wei : 'Oz',
         valueOrPercent: true,
         ozOrKg: false,
@@ -117,7 +122,8 @@
         },
         data: {
           total_balance:0,
-          total_profit:0
+          total_profit:0,
+          total_profit_c :0,
         },
         chartData: [
           ['Task', 'Hours per Day'],
@@ -151,14 +157,46 @@
       };
     },
     mounted() {
+      
       // this.$store.commit('setLoadingContent', true);
+      this.setClient();
       this.fetchData();
-      this.echartsInit();
+     
+      
+    },
+    watch: {
+      screenWidth(val){
+        console.log(val)
+        this.screenWidth = val
+      }
     },
     methods: {
+      //判断屏幕大小
+      setClient(){
+          let that = this
+          window.screenWidth = document.body.clientWidth
+          that.screenWidth = window.screenWidth
+   
+          if (this.screenWidth < 750) {// 1280是你想控制的屏幕大小临界值，可根据自己需求修改
+            this.isWidth = false
+          } else {
+            this.isWidth = true
+          }
+      },
+
       echartsInit () {
       // 找到容器 
       let myChart = this.$echarts.init(document.getElementById('myChart'))
+       
+      // 计算数学
+      // s = (chartData[3][1]/(this.chartData[1][1]+ this.chartData[3][1])*100);//gold  chf
+      // );
+      let silverbai = Math.floor( (this.chartData[3][1]/(this.chartData[1][1]+ this.chartData[3][1]) * 10000) ) / 100
+      let  glodbai = Math.floor( (this.chartData[1][1]/(this.chartData[1][1]+ this.chartData[3][1]) * 10000) ) / 100
+
+      // chartData[3][1];//silver
+
+
       // 开始渲染
       myChart.setOption({
         tooltip: {
@@ -166,7 +204,7 @@
       },
       series: [
         {
-          name: 'Access From',
+          // name: 'Gold',
           type: 'pie',
           radius: ['30%', '70%'],
           avoidLabelOverlap: false,
@@ -202,8 +240,10 @@
             show: false
           },
           data: [
-            { value: 89.6, name: '89.6%' },
-            { value: 10.4, name: '10.4%' },
+            //this.chartData[3][1]+
+            //this.chartData[1][1]+
+            { value: glodbai, name: glodbai+'%' },
+            { value: silverbai, name: silverbai+'%' },
           ]
         }
       ]
@@ -364,7 +404,7 @@
           total_profit: Number(total_profit),
           profit_percent: profit_percent
         }
-        
+        this.data.total_profit_c = this.data.total_profit;
         this.chartData = [
           ['Account', 'Available Balance'],
           ['Gold Coins', this.numberFormatter(this.data.result.gold.conversion_rate, 2) * 1],
@@ -374,9 +414,18 @@
           ['MasterCard', this.data.result.card ? this.numberFormatter(this.data.result.card.balance, 2) * 1 : 0],
         ];
         this.$store.commit('setLoadingContent', false);
+
+        this.echartsInit();
       },
   
       changeValueOrPercent(value) {
+        console.log(value);
+        if(value){
+          this.data.total_profit =  this.data.total_profit_c
+        }else{
+          this.data.total_profit  = this.data.total_profit/this.data.total_balance //this.vaults.gold/0.0283495    
+          this.data.total_profit  =  (this.data.total_profit*100).toFixed(4)+"%"
+        }
         this.valueOrPercent = value;
       },
       changeOzOrKg(value) {
@@ -488,5 +537,36 @@
 
   color: #363636;
   text-decoration: underline;
+}
+#myChart{
+  height: 496px;width: 496px;
+}
+@media only screen and (max-width:750px) {
+    .overview-contnet{
+      padding: 60px 30px 30px 30px;
+      margin: 0px auto; 
+      /* margin-top: 100px; */
+    }
+    .myChart{
+      /* display: none; */
+      margin-right: 0px;
+      position:static;
+     
+      /* left: 0px; */
+    }
+    .text-holding-overview{
+      margin-top: 50px;
+    }
+    
+    .text-detail{
+      width: 100%;
+    }
+    #myChart{
+      height: 296px;width: 296px;
+      margin: 0px auto;
+    }
+    .card-category {
+      margin-left: 27px;
+    }
 }
 </style>  

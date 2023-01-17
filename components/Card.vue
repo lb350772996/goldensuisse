@@ -2,7 +2,7 @@
     <div class="card-content d-flex flex-column" :style="'background: ' + background">
         <span class="text-type">{{ type }}</span>
         <div class="line"/>
-        <span class="text-holdings">{{ holdings }} {{ wei }}</span>
+        <span class="text-holdings">{{ pei }} {{ Math.floor(holdings * 100) / 100 }} {{ wei }}</span>
         <span class="text-profit-loss">CHF {{ profit_loss }}</span>
     </div>
 </template>
@@ -15,10 +15,12 @@ export default {
         'profit_loss',
         'background',
         'ozOrKg',
-        'wei'
+        'wei',
+        'pei',
     ],
     data() {
         return {
+            
         }
     },
     mounted() {
@@ -82,5 +84,15 @@ export default {
     margin-top: 38px;
     align-self: flex-end;
     margin-right: 12px;
+}
+@media only screen and (max-width:750px) {
+    .card-content{
+        margin-left: 0px !important;
+        margin-bottom: 27px;
+        margin-top: 35px;
+    }
+    /* .card{
+        margin-left: 0 !important;
+    } */
 }
 </style>

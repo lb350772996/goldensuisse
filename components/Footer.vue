@@ -33,4 +33,13 @@ export default {
     
     margin-left: 122px;
 }
+@media only screen and (max-width:750px) {
+    .text-copyright {
+        margin-left: 0px;
+        font-size: 13px;
+        /* margin-bottom: 10px; */
+        text-align:center;
+        width: 100%;
+    }
+}
 </style>
