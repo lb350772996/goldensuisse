@@ -6,7 +6,7 @@
         </a>
         <section @click="close_t" data-v-3b6aeaf0="" class="header__menu">
             <svg data-v-0fb7651e="" data-v-3b6aeaf0="" class="menu">
-                <line data-v-0fb7651e="" x1="0" x2="60" y1="1" y2="1" class="menu__rect"></line>
+                <line data-v-0fb7651e="" x1="0" x2="60" y1="1" y2="1" class="menu__rect" ></line>
                 <line data-v-0fb7651e="" x1="60" x2="0" y1="13" y2="13" class="menu__rect"></line>
             </svg>
         </section>
