@@ -13,7 +13,7 @@
         <div class=" collapse navbar-collapse" :class="!h_title ? '' : 'title'" id="collapse" style="">
             <ul class="navbar-nav nav-list" :class="h_isWidth ? '' : 'flex-column'">
                 <li class="nav-link">
-                    <a>Holdings</a>
+                    <a href="/vault-holding-details">Holdings</a>
                 </li>
                 <li class="nav-link">
                     <a>Orders</a>
