@@ -6,14 +6,14 @@
         </a>
         <section @click="close_t" data-v-3b6aeaf0="" class="header__menu">
             <svg data-v-0fb7651e="" data-v-3b6aeaf0="" class="menu">
-                <line data-v-0fb7651e="" x1="0" x2="60" y1="1" y2="1" class="menu__rect"></line>
+                <line data-v-0fb7651e="" x1="0" x2="60" y1="1" y2="1" class="menu__rect" ></line>
                 <line data-v-0fb7651e="" x1="60" x2="0" y1="13" y2="13" class="menu__rect"></line>
             </svg>
         </section>
         <div class=" collapse navbar-collapse" :class="!h_title ? '' : 'title'" id="collapse" style="">
             <ul class="navbar-nav nav-list" :class="h_isWidth ? '' : 'flex-column'">
                 <li class="nav-link">
-                    <a>Holdings</a>
+                    <a href="/vault-holding-details">Holdings</a>
                 </li>
                 <li class="nav-link">
                     <a>Orders</a>

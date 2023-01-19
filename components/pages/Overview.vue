@@ -10,7 +10,7 @@
             <div style="height: 1px; width: 620px; background-color: black; margin-top: 15px;" :style="isWidth ? '' : 'width: 95%'" />
         </div>
         <div class="d-flex flex-column" style="margin-top: 30px">
-            <div class="d-flex hold-overview" :class="isWidth ? 'flex-row' : 'flex-column'" style="margin-bottom: 15px">
+            <div class="d-flex hold-overview" :class="isWidth ? 'flex-row' : 'flex-column'" style="margin-bottom: 15px; gap:80px;">
                 <div class="d-flex flex-column">
                     <span class="text-overview-title">Total</span>
                     <span class="text-overview-value">CHF {{ data.total_balance.toFixed(2) }}</span>
@@ -111,6 +111,7 @@
     },
     data () {
       return {
+        conversion_oz_value: 1 * process.env.CONVERSION_KG_OZ_VALUE,
         screenWidth:1040, // 屏幕宽度
 		    isWidth: false ,
         wei : 'Oz',
@@ -158,7 +159,7 @@
     },
     mounted() {
       
-      // this.$store.commit('setLoadingContent', true);
+      this.$store.commit('setLoadingContent', true);
       this.setClient();
       this.fetchData();
      
@@ -254,11 +255,12 @@
         console.log('fetchData');
      
 
-        const config = {
-            headers:{
-              AuthenticationToken: process.env.TEST_AUTH_TOKEN,
-            }
-          };
+        const config = JSON.parse(localStorage.getItem('httpConfig'));
+        // = {
+        //     headers:{
+        //       AuthenticationToken: process.env.TEST_AUTH_TOKEN,
+        //     }
+        //   };
 
         // var currency_result = await this.$api.$get('exchange_price/type_based');
 
@@ -430,12 +432,12 @@
       },
       changeOzOrKg(value) {
         if(value){
-          this.vaults.gold = this.vaults.gold*0.0283495
-          this.vaults.silver = this.vaults.silver*0.0283495
+          this.vaults.gold = this.vaults.gold/this.conversion_oz_value
+          this.vaults.silver = this.vaults.silver/this.conversion_oz_value
           this.wei = 'Kg';
         }else{
-          this.vaults.gold =this.vaults.gold/0.0283495
-          this.vaults.silver =this.vaults.silver/0.0283495
+          this.vaults.gold =this.vaults.gold*this.conversion_oz_value
+          this.vaults.silver =this.vaults.silver*this.conversion_oz_value
           this.wei = 'Oz';
         }
         this.ozOrKg = value;
@@ -568,5 +570,6 @@
     .card-category {
       margin-left: 27px;
     }
+  
 }
 </style>  

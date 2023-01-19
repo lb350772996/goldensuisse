@@ -1,6 +1,27 @@
 <template>
-  <div class="d-flex flex-column" v-if="this.$store.state.loadingContent == false && data != null">
-    <div class="tab_section" >
+  <div class="d-flex flex-column overview-contnet " v-if="this.$store.state.loadingContent == false && data != null">
+    <div class="text-username d-flex flex-column">
+            <span>Welcome  </span>
+            <span>{{ this.$store.state.firstname }} {{ this.$store.state.lastname }}</span>
+            <div style="height: 1px; width: 240px; background-color: black; margin-top: 15px;"/>
+    </div>
+    <div class=" d-flex flex-column"   >
+        <div class="d-flex flex-row" style="margin-top: 35px" >
+              <Card 
+                type="Gold"
+                :holdings="this.contentData.lbl_gold_qty"
+                :profit_loss="this.contentData.lbl_gold_total.slice(2)"
+                background="#EBBD4C"   :wei="wei" />
+              
+        </div>
+    </div>       
+    <div class="text-holding-overview-detail d-flex flex-column">
+        <span>Holding Overview</span>
+    </div>  
+    <div class="d-flex" style="margin-top: 25px;" >
+          <ToggleSwitch :value="ozOrKg" label="Oz/Kg" @change="changeOzOrKg"/>
+    </div>
+    <!-- <div class="tab_section" >
         <ul class="nav nav-pills mb-3 float-left w-auto option_tab" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a
@@ -36,31 +57,31 @@
                 <span class="input-group-text slider_text" v-else>Kg</span>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="tab-content" id="pills-tabContent">
         <div
           :class="'tab-pane fade ' + (tabIndex == 0 ? 'show active' : '')"
           id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-            <p class="persona_screen">Gold Account</p>
+            <!-- <p class="persona_screen">Gold Account</p> -->
             <!-- table section-->
             <div class="row">
-                <div class="col-12 col-sm-12 col-xl-12 col-md-12 col-lg-12">
+                <div class="col-12 col-sm-12 col-xl-12 col-md-12 col-lg-12" style="padding: 0px;margin-top: 45px;">
                     <div class="table_section_paddinges">
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="account_number_tables w-25">Bullion</th>
-                                        <th class="account_number_tables w-25">Vault</th>
-                                        <th class="account_number_tables w-25">Market Price</th>
-                                        <th class="account_number_tables w-25" v-if="valueOrPercent">
+                                        <th class="account_number_tables " style="width:23%;" >Bullion</th>
+                                        <th class="account_number_tables " style="width:23%;" >Vault</th>
+                                        <th class="account_number_tables " style="width:23%;" >Market Price</th>
+                                        <th class="account_number_tables " style="width:23%;"  v-if="valueOrPercent">
                                             <span class="slider_text" >Oz</span>
                                         </th>
-                                        <th class="account_number_tables w-25" v-else>
+                                        <th class="account_number_tables " style="width:23%;"   v-else>
                                             <span class="slider_text">Kg</span>
                                         </th>
-                                        <th class="account_number_tables w-25">Value</th>
+                                        <th class="account_number_tables " style="width:30%;" >Value </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -162,6 +183,7 @@
                                         </td>
                                         <td id="lbl_silver_total">
                                             {{ contentData.lbl_silver_total }}
+                                            
                                         </td>
                                     </tr>
                                     <tr v-if="data.balance_result.silver.balance != undefined">
@@ -272,9 +294,18 @@
 </div>
 </template>
 <script>
+ import ToggleSwitch from '../Switch.vue';
+ import Card from '../Card.vue';
 export default {
+    name: 'holding',
+    components: { 
+        ToggleSwitch,
+        Card
+    },
   data() {
     return {
+        ozOrKg : false,
+        wei: 'Oz',
         valueOrPercent: true,
         tabIndex : 0,
         data: null,
@@ -286,20 +317,23 @@ export default {
   },
 
   mounted() {
-    // this.$store.commit('setLoadingContent', true);
-    // this.fetchData();
+    this.$store.commit('setLoadingContent', true);
+    this.fetchData();
   },
 
   methods: {
     async fetchData(){
-      console.log('fetchData');
-
+      console.log('fetchData， dgikubgs');
+      const config = JSON.parse(localStorage.getItem('httpConfig'));
       var body = new FormData();
       body.append('username', 'yang@goldensuisse.com');
-      var balance_result = await this.$api.$post('getBalance', body);
+    //   var balance_result = await this.$api.$post('getBalance', body);
+      var balance_result = await this.$axios.$post('getBalance',body,config)
       console.log(balance_result);
 
-      var currency_result = await this.$api.$get('exchange_price/type_based');
+    //   var currency_result = await this.$api.$get('exchange_price/type_based');
+
+      var currency_result = await this.$axios.$get('exchange_price/type_based',config);
       console.log(currency_result);
 
       var default_currency = this.$store.state.app_currency;
@@ -428,6 +462,16 @@ export default {
 
     change(index) {
       this.tabIndex = index;
+    },
+    changeOzOrKg(value) {
+        this.ozOrKg = value;
+        this.valueOrPercent = value;
+        if(value){
+            this.wei = 'Oz'
+        }else{
+            this.wei = 'Kg'
+        }
+        this.getContentData();
     },
     
     getContentData() {
@@ -571,3 +615,28 @@ export default {
 
 }
 </script>
+<style>
+.text-username {
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 35px;
+
+    color: #000000;
+}
+.overview-contnet {
+    padding: 30px 120px 30px 120px;
+
+}
+.text-holding-overview-detail{
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 46px;
+
+    color: #000000;
+    margin-top: 35px;
+}
+</style>

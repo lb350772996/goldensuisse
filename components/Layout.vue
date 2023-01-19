@@ -23,6 +23,14 @@ export default {
   fetch({redirect}){
     redirect("/")
   },
+  mounted() {
+    const config = {
+            headers:{
+              AuthenticationToken: process.env.TEST_AUTH_TOKEN,
+            }
+          };
+    localStorage.setItem('httpConfig', JSON.stringify(config));
+  },
   name: 'Layout',
   props: [ 'content', 'title' ],
   data() {
