@@ -90,13 +90,13 @@
                                         <td>
                                             {{ data.balance_result.goldbar.account_no }}
                                         </td>
-                                        <td id="lbl_gold_bar_market_price">
+                                        <td id="lbl_gold_bar_market_price" style="white-space:nowrap">
                                             {{ contentData.lbl_gold_bar_market_price  }}
                                         </td>
-                                        <td id="lbl_gold_bar_qty">
+                                        <td id="lbl_gold_bar_qty" >
                                             {{ contentData.lbl_gold_bar_qty }}
                                         </td>
-                                        <td id="lbl_gold_bar_total">
+                                        <td id="lbl_gold_bar_total" >
                                             {{ contentData.lbl_gold_bar_total }}
                                         </td>
                                     </tr>
@@ -111,7 +111,7 @@
                                         <td id="lbl_gold_qty">
                                             {{ contentData.lbl_gold_qty }}
                                         </td>
-                                        <td id="lbl_gold_total">
+                                        <td id="lbl_gold_total" style="white-space:nowrap">
                                             {{ contentData.lbl_gold_total }}
                                         </td>
                                     </tr>
@@ -627,6 +627,8 @@ export default {
 }
 .overview-contnet {
     padding: 30px 120px 30px 120px;
+    padding-left: 60px;
+    padding-right: 60px;
 
 }
 .text-holding-overview-detail{
