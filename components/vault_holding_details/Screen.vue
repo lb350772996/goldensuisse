@@ -90,38 +90,38 @@
                                         <td>
                                             {{ data.balance_result.goldbar.account_no }}
                                         </td>
-                                        <td id="lbl_gold_bar_market_price" style="white-space:nowrap">
+                                        <td id="lbl_gold_bar_market_price" class="td-text">
                                             {{ contentData.lbl_gold_bar_market_price  }}
                                         </td>
-                                        <td id="lbl_gold_bar_qty" >
+                                        <td id="lbl_gold_bar_qty" class="td-text" >
                                             {{ contentData.lbl_gold_bar_qty }}
                                         </td>
-                                        <td id="lbl_gold_bar_total" >
+                                        <td id="lbl_gold_bar_total" class="td-text">
                                             {{ contentData.lbl_gold_bar_total }}
                                         </td>
                                     </tr>
                                     <tr v-if="data.balance_result.gold.balance != undefined">
                                         <td>Gold Eagles American</td>
-                                        <td>
+                                        <td class="td-text">
                                             {{ data.balance_result.gold.account_no }}
                                         </td>
-                                        <td id="lbl_gold_market_price">
+                                        <td id="lbl_gold_market_price" class="td-text">
                                             {{ contentData.lbl_gold_market_price }}
                                         </td>
-                                        <td id="lbl_gold_qty">
+                                        <td id="lbl_gold_qty" class="td-text">
                                             {{ contentData.lbl_gold_qty }}
                                         </td>
-                                        <td id="lbl_gold_total" style="white-space:nowrap">
+                                        <td id="lbl_gold_total" class="td-text">
                                             {{ contentData.lbl_gold_total }}
                                         </td>
                                     </tr>
                                     <tr v-if="data.balance_result.gold.balance != undefined">
                                         <td>Total in vault</td>
                                         <td colspan="2">&nbsp;</td>
-                                        <td id="lbl_total_qty_gold_gold_bar">
+                                        <td id="lbl_total_qty_gold_gold_bar" class="td-text">
                                             {{ contentData.lbl_total_qty_gold_gold_bar }}
                                         </td>
-                                        <td id="lbl_total_gold_gold_bar">
+                                        <td id="lbl_total_gold_gold_bar" class="td-text">
                                             {{ contentData.lbl_total_gold_gold_bar }}
                                         </td>
                                     </tr>
@@ -616,6 +616,9 @@ export default {
 }
 </script>
 <style>
+.td-text{
+    white-space:nowrap
+}
 .text-username {
     font-family: 'Arial';
     font-style: normal;
